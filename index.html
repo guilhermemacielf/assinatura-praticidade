@@ -41,6 +41,22 @@
 <meta name="twitter:title" content="Assinatura Praticidade — Orgânico do Chico">
 <meta name="twitter:description" content="Orgânicos higienizados, carnes e frutas, prontos na sua porta toda semana em BH.">
 <meta name="twitter:image" content="https://assinaturas.organicodochico.com.br/logo-organico-do-chico-fundo-verde.png">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '342464266426741');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=342464266426741&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -573,6 +589,23 @@
     else if(h.indexOf('SEU-INSTAGRAM') > -1) msg = 'Instagram em configuração — disponível em breve';
     if(msg){ a.addEventListener('click', function(e){ e.preventDefault(); showToast(msg); }); }
   });
+
+  /* Meta Pixel — eventos de clique (assinar = InitiateCheckout, WhatsApp = Contact) */
+  if(window.fbq){
+    document.querySelectorAll('.plan').forEach(function(card){
+      var btn = card.querySelector('.plan-foot .btn');
+      if(!btn) return;
+      var tier = ((card.querySelector('.tier')||{}).textContent || 'Cesta').trim();
+      var priceTxt = (card.querySelector('.price')||{}).textContent || '';
+      var val = parseFloat(priceTxt.replace(/[^0-9,]/g,'').replace(',','.')) || undefined;
+      btn.addEventListener('click', function(){
+        fbq('track','InitiateCheckout',{content_name:'Cesta '+tier, value:val, currency:'BRL'});
+      });
+    });
+    document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+      a.addEventListener('click', function(){ fbq('track','Contact'); });
+    });
+  }
 </script>
 
 </body>
